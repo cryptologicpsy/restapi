@@ -1,95 +1,64 @@
 package com.example.restapi.controllers;
-
-
-import com.example.restapi.MovieNotfoundException;
+import com.example.restapi.Services.MoviesService;
 import com.example.restapi.models.Movie;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+// Ορίζει ότι αυτή η κλάση είναι ένας REST controller
 @RestController
-@RequestMapping("/movies")
+// Ορίζει το base path για όλα τα endpoints αυτού του controller
+@RequestMapping("/api/movies")
 public class MovieController {
 
-    private List<Movie> movies = new ArrayList<>();
-    private Integer nextid = 1;
+  // Dependency injection του MoviesService
+  MoviesService movieService;
 
-    public MovieController(){
-
-        movies.add(new Movie(nextid++, "title1", "director1", 2015));
-        movies.add(new Movie(nextid++, "title2", "director2", 2015));
-        movies.add(new Movie(nextid++, "title3", "director3", 2015));
-    }
+  // Constructor-based dependency injection (προτιμότερο από @Autowired)
+  public MovieController(MoviesService movieService) {
+    this.movieService = movieService;
+  }
 
 
-    @GetMapping("")
-    public List<Movie> getAllMovies(){
+  // GET endpoint που επιστρέφει όλες τις ταινίες
+  // URL: GET /api/movies
+  @GetMapping("")
+  public List<Movie> getAllMovies(){
+    return movieService.getAllMovies();
+  }
 
-      return movies;
-    }
-
-    @GetMapping("/{id}")
-    public Movie getMovieById(@PathVariable int id) {
-
-       // Movie movie = null;
-
-        for(Movie m: movies){
-
-            if(m.getId() == id) {
-                return m;
-            }
-        }
-     throw new MovieNotfoundException();
-    }
+  // GET endpoint που επιστρέφει μία ταινία με βάση το id
+  // URL: GET /api/movies/{id}
+  // Το @PathVariable δεσμεύει το {id} από το URL στην παράμετρο int id
+  @GetMapping("/{id}")
+  public Movie getMovieById(@PathVariable int id) {
+    return movieService.getMovieById(id);
+  }
 
 
-    @PostMapping("")
-
-    public void createMovie(@RequestBody Movie movie){
-
-        movie.setId(nextid++);
-
-        movies.add(movie);
-    }
-
-
-    @PutMapping("/{id}")
-    public void updateMovie (@PathVariable int id, @RequestBody Movie movie){
+  // POST endpoint για δημιουργία νέας ταινίας
+  // URL: POST /api/movies
+  // Το @RequestBody μετατρέπει το JSON του request body σε Movie object
+  @PostMapping("")
+  public void createMovie(@RequestBody Movie movie){
+    movieService.post(movie);
+  }
 
 
-        for(Movie m: movies){
-
-            if(m.getId() == id) {
-                m.setTitle(movie.getTitle());
-                m.setDirector(movie.getDirector());
-                m.setYear(movie.getYear());
-                break;
-            }
-        }
+  // PUT endpoint για ενημέρωση υπάρχουσας ταινίας
+  // URL: PUT /api/movies/{id}
+  // Παίρνει το id από το URL και τα νέα δεδομένα από το request body
+  @PutMapping("/{id}")
+  public void updateMovie (@PathVariable int id, @RequestBody Movie movie){
+    movieService.put(id, movie);
+  }
 
 
-    }
-
-
-    @DeleteMapping("/{id}")
-
-    public void deleteMovie (@PathVariable int id){
-
-
-        for(Movie m: movies){
-
-            if(m.getId() == id) {
-                movies.remove(m);
-                break;
-            }
-        }
-
-
-    }
-
-
-
-
+  // DELETE endpoint για διαγραφή ταινίας
+  // URL: DELETE /api/movies/{id}
+  @DeleteMapping("/{id}")
+  public void deleteMovie (@PathVariable int id){
+    movieService.delete(id);
+  }
 
 }

@@ -4,7 +4,7 @@ REST API for managing movies
 
 ## Base URL
 ```
-http://localhost:8080/movies
+http://localhost:8080/api/movies
 ```
 
 ## Endpoints
@@ -12,7 +12,7 @@ http://localhost:8080/movies
 ### 1. Get All Movies
 Retrieves all movies
 
-**Endpoint:** `GET /movies`
+**Endpoint:** `GET /api/movies`
 
 **Response:**
 ```json
@@ -40,14 +40,14 @@ Retrieves all movies
 ### 2. Get Movie by ID
 Retrieves a specific movie by ID
 
-**Endpoint:** `GET /movies/{id}`
+**Endpoint:** `GET /api/movies/{id}`
 
 **Path Parameters:**
 - `id` (integer) - The movie ID
 
 **Example Request:**
 ```
-GET /movies/1
+GET /api/movies/1
 ```
 
 **Response:**
@@ -69,7 +69,7 @@ GET /movies/1
 ### 3. Create Movie
 Creates a new movie
 
-**Endpoint:** `POST /movies`
+**Endpoint:** `POST /api/movies`
 
 **Headers:**
 ```
@@ -95,7 +95,7 @@ Content-Type: application/json
 ### 4. Update Movie
 Updates an existing movie
 
-**Endpoint:** `PUT /movies/{id}`
+**Endpoint:** `PUT /api/movies/{id}`
 
 **Path Parameters:**
 - `id` (integer) - The ID of the movie to update
@@ -116,7 +116,7 @@ Content-Type: application/json
 
 **Example Request:**
 ```
-PUT /movies/1
+PUT /api/movies/1
 ```
 
 **Status Codes:**
@@ -127,14 +127,14 @@ PUT /movies/1
 ### 5. Delete Movie
 Deletes a movie
 
-**Endpoint:** `DELETE /movies/{id}`
+**Endpoint:** `DELETE /api/movies/{id}`
 
 **Path Parameters:**
 - `id` (integer) - The ID of the movie to delete
 
 **Example Request:**
 ```
-DELETE /movies/1
+DELETE /api/movies/1
 ```
 
 **Status Codes:**
@@ -165,8 +165,8 @@ The API is initialized with 3 movies:
 You can create a Postman collection with all these endpoints for easy testing.
 
 ### Example Workflow
-1. Get all movies - `GET /movies`
-2. Create a new movie - `POST /movies`
-3. Get the new movie by ID - `GET /movies/{id}`
-4. Update the movie - `PUT /movies/{id}`
-5. Delete the movie - `DELETE /movies/{id}`
+1. Get all movies - `GET /api/movies`
+2. Create a new movie - `POST /api/movies`
+3. Get the new movie by ID - `GET /api/movies/{id}`
+4. Update the movie - `PUT /api/movies/{id}`
+5. Delete the movie - `DELETE /api/movies/{id}`

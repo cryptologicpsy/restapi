@@ -100,7 +100,7 @@
 <script>
     // GET ALL
     function loadMovies() {
-        fetch('/movies')
+        fetch('/api/movies')
             .then(res => res.json())
             .then(movies => {
                 const tbody = document.getElementById('moviesTable');
@@ -137,7 +137,7 @@
 
         if (id) {
             // PUT
-            fetch(`/movies/${id}`, {
+            fetch(`/api/movies/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(movie)
@@ -147,7 +147,7 @@
             });
         } else {
             // POST
-            fetch('/movies', {
+            fetch('/api/movies', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(movie)
@@ -171,7 +171,7 @@
     function deleteMovie(id) {
         if (!confirm('Να διαγραφεί η ταινία;')) return;
 
-        fetch(`/movies/${id}`, {
+        fetch(`/api/movies/${id}`, {
             method: 'DELETE'
         }).then(loadMovies);
     }
