@@ -27,6 +27,8 @@ public class MovieController {
   @GetMapping("/{id}")
   public Movie getMovieById(@PathVariable Long id)
   {
+    // TODO: Check if the movie is null and return 404 if not found
+
 
     return movieService.getMovieById(id);
   }
@@ -35,6 +37,8 @@ public class MovieController {
   @PostMapping("")
   public void createMovie(@RequestBody Movie movie)
   {
+    // TODO: Optionally return created movie with HTTP 201
+
     movieService.post(movie);
 
   }
@@ -43,6 +47,8 @@ public class MovieController {
   @PutMapping("/{id}")
   public void updateMovie (@PathVariable Long id, @RequestBody Movie movie)
   {
+    // TODO: Check if movie exists (null) before updating and return 404 if not found
+
     movieService.put(id, movie);
 
   }
@@ -51,6 +57,8 @@ public class MovieController {
   @DeleteMapping("/{id}")
   public void deleteMovie (@PathVariable Long id)
   {
+    // TODO: Check if movie exists (null) before deleting and return 404 if not found
+
     movieService.delete(id);
 
   }
