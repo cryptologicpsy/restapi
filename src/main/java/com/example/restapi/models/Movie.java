@@ -1,25 +1,35 @@
 package com.example.restapi.models;
 
+import jakarta.persistence.*;
+
+
+@Entity
 public class Movie {
 
-
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
     private String director;
     private int year;
 
-    public Movie(Integer id, String title, String director, int year) {
+
+    public Movie(Long id, String title, String director, int year) {
         this.id = id;
         this.title = title;
         this.director = director;
         this.year = year;
     }
 
-    public Integer getId() {
+    public Movie() {
+
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

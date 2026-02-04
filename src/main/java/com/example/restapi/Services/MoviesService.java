@@ -2,102 +2,72 @@ package com.example.restapi.Services;
 
 
 import com.example.restapi.MovieNotfoundException;
+import com.example.restapi.Repositories.MovieRepository;
 import com.example.restapi.models.Movie;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-// Ορίζει ότι αυτή η κλάση είναι ένα Spring Service component
-// Θα γίνει automatically detected από το Spring για dependency injection
 @Service
 public class MoviesService {
 
-    // Λίστα που αποθηκεύει όλες τις ταινίες (in-memory storage)
-    private List<Movie> movies = new ArrayList<>();
+    MovieRepository movieRepository;
 
-    // Μεταβλητή που κρατάει το επόμενο διαθέσιμο ID για νέες ταινίες
-    private Integer nextid = 1;
-
-    // Constructor που αρχικοποιεί το service με 3 δείγματα ταινιών
-    public MoviesService(){
-        movies.add(new Movie(nextid++, "title1", "director1", 2015));
-        movies.add(new Movie(nextid++, "title2", "director2", 2015));
-        movies.add(new Movie(nextid++, "title3", "director3", 2015));
+    public MoviesService(MovieRepository db) {
+        this.movieRepository = db;
     }
-
 
     // Επιστρέφει όλες τις ταινίες
     public List<Movie> getAllMovies(){
-        return movies;
+
+        return movieRepository.findAll();
     }
 
 
-    // Αναζητά και επιστρέφει μία ταινία με βάση το ID
-    // Αν δεν βρεθεί, πετάει MovieNotfoundException
-    public Movie getMovieById( int id) {
-
-        // Movie movie = null;
-
-        // Διατρέχει όλες τις ταινίες
-        for(Movie m: movies){
-            // Αν βρεθεί ταινία με το συγκεκριμένο ID
-            if(m.getId() == id) {
-                return m;
-            }
+    public Movie getMovieById( Long id) {
+        return movieRepository.findById(id).orElse(null);
         }
-        // Αν δεν βρεθεί καμία ταινία, πετάει exception
-        throw new MovieNotfoundException();
-    }
 
 
 
-    // Δημιουργεί νέα ταινία
-    // Αναθέτει αυτόματα το επόμενο διαθέσιμο ID και την προσθέτει στη λίστα
+
     public void post( Movie movie){
-        // Ορίζει το ID της νέας ταινίας και αυξάνει το nextid
-        movie.setId(nextid++);
-        // Προσθέτει την ταινία στη λίστα
-        movies.add(movie);
+        movieRepository.save(movie);
     }
 
 
 
-    // Ενημερώνει μία υπάρχουσα ταινία με βάση το ID
-    // Ενημερώνει μόνο τα πεδία title, director, year (όχι το ID)
-    public void put(int id,  Movie movie){
+    public void put(Long id,  Movie movie){
 
-        // Διατρέχει όλες τις ταινίες
-        for(Movie m: movies){
-            // Βρίσκει την ταινία με το συγκεκριμένο ID
-            if(m.getId() == id) {
-                // Ενημερώνει τα πεδία της
+        Movie m = movieRepository.findById(id).orElse(null);
+
+               // Ενημερώνει τα πεδία της
+                if( m != null){
                 m.setTitle(movie.getTitle());
                 m.setDirector(movie.getDirector());
                 m.setYear(movie.getYear());
-                // Διακόπτει το loop αφού βρέθηκε η ταινία
-                break;
-            }
-        }
+                movieRepository.save(m);}
+
+
+
+
     }
 
 
 
-    // Διαγράφει μία ταινία με βάση το ID
-    public void delete(int id){
+    public void delete(Long id){
 
-        // Διατρέχει όλες τις ταινίες
-        for(Movie m: movies){
-            // Βρίσκει την ταινία με το συγκεκριμένο ID
-            if(m.getId() == id) {
-                // Αφαιρεί την ταινία από τη λίστα
-                movies.remove(m);
-                // Διακόπτει το loop αφού βρέθηκε και διαγράφηκε η ταινία
-                break;
+        Movie m = movieRepository.findById(id).orElse(null);
+            if(m != null){
+                movieRepository.delete(m);
             }
-        }
-    }
 
+
+    }
+   
 }
