@@ -37,7 +37,6 @@ public class MovieController {
   @PostMapping("")
   public void createMovie(@RequestBody Movie movie)
   {
-    // TODO: Optionally return created movie with HTTP 201
 
     movieService.post(movie);
 
